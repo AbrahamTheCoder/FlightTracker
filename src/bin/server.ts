@@ -1,7 +1,9 @@
 import http from "http";
 import index from "../index";
+import mongoose from "mongoose";
 import { logger } from "../lib/logger";
 import { config } from "../config";
+const { db } = config;
 
 const port = (function normalizePort(val: string) {
   const portNumber = parseInt(val, 10);
@@ -25,6 +27,13 @@ const server = http.createServer(index);
 
 void (async function initServer() {
   try {
+    logger.debug(`IS_LOCAL: ${config.IS_LOCAL.toString()}`);
+    logger.info(`NODE_ENV: ${config.NODE_ENV}`);
+
+    // DB
+    await mongoose.connect(db.DATABASE_ENDPOINT);
+    logger.info("Connected to DB");
+
     // SERVER
     server.listen(port);
   } catch (error) {
