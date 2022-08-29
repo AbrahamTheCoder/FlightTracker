@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { login } from "../../controllers/user.login.controller";
 import { signup } from "../../controllers/user.signup.controller";
 
 const userRoute = Router();
@@ -102,5 +103,55 @@ const ROUTE = "/user";
  */
 
 userRoute.post(`${ROUTE}/signup`, signup);
+
+/**
+ * @swagger
+ * /user/login:
+ *   post:
+ *     tags: [Users]
+ *     summary: Route to authenticate a user
+ *     description: We use the JWT approach to accomplish this. Our clients should store the JWT on their any local storage.
+ *     requestBody:
+ *       description: The credentials of the already created user
+ *       content:
+ *        application/json:
+ *          schema:
+ *           type: object
+ *           required:
+ *            - email
+ *            - password
+ *           properties:
+ *             email:
+ *               type: string
+ *               example: test@example.com
+ *             password:
+ *               type: string
+ *               example: paco.Paco0
+ *
+ *     responses:
+ *      '200':
+ *        description: An Jason Web Token (JWT). This JWT has to be stored somewhere in our client. This JWT token allows the user to make authorized-only requests.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                accessToken:
+ *                  type: string
+ *                  example: eyJhbGciOiJIUzI1NiJ9.V2UgbmVlZCB0byBmaW5kIHRoZSBlbWFpbCBmcm9tIHVuZGVmaW5lZCB3aXRoIHBhc3N3b3JkOiB1bmRlZmluZWQgaW4gdGhlIERC.BzMG93H01c6iqAvR2mNDcfFU3_a1oDWYDVXSeNOey-o
+ *                userInfo:
+ *                  type: object
+ *                  properties:
+ *                    email:
+ *                      type: string
+ *                      example: 'test@example.com'
+ *                    isEmailVerified:
+ *                      type: boolean
+ *                      example: false
+ *                    username:
+ *                      type: string
+ *                      example: 'Paco.User'
+ */
+userRoute.post(`${ROUTE}/login`, login);
 
 export default userRoute;

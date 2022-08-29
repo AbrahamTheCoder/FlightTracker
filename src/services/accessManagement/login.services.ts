@@ -1,3 +1,4 @@
+import { compare } from "bcrypt";
 import { Types } from "mongoose";
 import { UserModel } from "../../models";
 
@@ -12,4 +13,11 @@ export const findUserWithEmail = (email?: string) => {
   return UserModel.findOne({ email }).select(
     "password email isEmailVerified username"
   );
+};
+
+export const comparePasswords = (
+  plainTextPassword: string,
+  hashedPassword: string
+) => {
+  return compare(plainTextPassword, hashedPassword);
 };
